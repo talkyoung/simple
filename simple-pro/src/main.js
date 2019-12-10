@@ -3,6 +3,8 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 
 // 引用axios，并设置基础URL为后端服务api地址
 var axios = require('axios');
@@ -13,22 +15,7 @@ Vue.prototype.$axios = axios
 
 Vue.config.productionTip = false
 
-// /****** 全局注册vux组件 ******/
-// import {TransferDom, Cell, Toast, Alert, Confirm, Group, CellBox, Actionsheet} from 'vux';
-// Vue.directive('transfer-dom', TransferDom);
-// Vue.component('cell', Cell);
-// Vue.component('toast', Toast);
-// Vue.component('alert', Alert);
-// Vue.component('confirm', Confirm);
-// Vue.component('group', Group);
-// Vue.component('cell-box', CellBox);
-// Vue.component('actionsheet', Actionsheet);
-//
-//
-// /****** 全局处理错误提示、数据加载 ******/
-// import {ToastPlugin, LoadingPlugin} from 'vux'
-// Vue.use(ToastPlugin);
-// Vue.use(LoadingPlugin);
+Vue.use(ElementUI)
 
 /* eslint-disable no-new */
 new Vue({

@@ -1,6 +1,6 @@
 <template>
-    <div>
-      页面头部
+    <div class="app-container">
+      <h2>Simple-Pro Login</h2>
     </div>
 </template>
 

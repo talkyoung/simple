@@ -1,6 +1,6 @@
 <template>
-    <div>
-      页面尾部
+    <div style="font-size: 10px;margin-bottom: 20px">
+      <span style="float: right;">Copyright by @talkyoung.</span>
     </div>
 </template>
 

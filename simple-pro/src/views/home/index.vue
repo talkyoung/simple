@@ -2,7 +2,7 @@
   <div>
     <login-header></login-header>
     <hr/>
-      这是首页！
+      <h1>这是首页！</h1>
     <hr/>
     <login-footer></login-footer>
   </div>

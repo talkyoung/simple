@@ -6,6 +6,7 @@ import home from '../views/home/index'
 Vue.use(Router)
 
 export default new Router({
+  // base: '/simpro/',
   routes: [
     {
       path: '/',
@@ -13,7 +14,7 @@ export default new Router({
       component: login
     },
     {
-      path: '/',
+      path: '/home',
       name: 'home',
       component: home
     }
