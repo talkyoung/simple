@@ -1,8 +1,8 @@
 package com.talkyoung.simpro.serviceImpl;
 
-import com.talkyoung.simpro.dao.UserMapper;
-import com.talkyoung.simpro.entity.User;
-import com.talkyoung.simpro.entity.UserExample;
+import com.talkyoung.simpojo.dao.UserMapper;
+import com.talkyoung.simpojo.entity.User;
+import com.talkyoung.simpojo.entity.UserExample;
 import com.talkyoung.simpro.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

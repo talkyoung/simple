@@ -20,7 +20,16 @@
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.talkyoung</groupId>
+            <artifactId>sim-pojo</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.talkyoung</groupId>
+            <artifactId>sim-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!--        由于移除了springboot内置的tomcat而增加的servlet-->
 <!--        <dependency>-->
 <!--            <groupId>org.apache.tomcat</groupId>-->
@@ -85,6 +94,7 @@
             <scope>runtime</scope>
             <version>8.0.17</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>

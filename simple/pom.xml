@@ -10,5 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>sim-pro</module>
+        <module>sim-common</module>
+        <module>sim-pojo</module>
     </modules>
 </project>
