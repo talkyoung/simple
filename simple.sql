@@ -16,6 +16,22 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`simple` /*!40100 DEFAULT CHARACTER SET 
 
 USE `simple`;
 
+/*Table structure for table `sp_role` */
+
+DROP TABLE IF EXISTS `sp_role`;
+
+CREATE TABLE `sp_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `status` int(1) DEFAULT NULL COMMENT '0->启用，1->禁用',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Data for the table `sp_role` */
+
+insert  into `sp_role`(`id`,`name`,`description`,`status`) values (1,'ROLE_ADMIN','管理员',1);
+
 /*Table structure for table `sp_student` */
 
 DROP TABLE IF EXISTS `sp_student`;
@@ -52,6 +68,21 @@ CREATE TABLE `sp_user` (
 /*Data for the table `sp_user` */
 
 insert  into `sp_user`(`id`,`username`,`password`,`address`,`phone_number`) values (1,'admin','123456',NULL,NULL),(2,'admin1','admin1',NULL,NULL),(3,'admin2','admin2',NULL,NULL),(4,'admin3','admin3',NULL,NULL),(5,'admin4','admin4',NULL,NULL),(6,'admin5','admin5',NULL,NULL),(7,'admin6','admin6',NULL,NULL),(8,'admin7','admin7',NULL,NULL),(9,'admin8','admin5',NULL,NULL);
+
+/*Table structure for table `sp_user_role_relation` */
+
+DROP TABLE IF EXISTS `sp_user_role_relation`;
+
+CREATE TABLE `sp_user_role_relation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `role_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Data for the table `sp_user_role_relation` */
+
+insert  into `sp_user_role_relation`(`id`,`user_id`,`role_id`) values (1,1,1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
