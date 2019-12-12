@@ -2,14 +2,14 @@
   <div class="login">
     <el-card class="login-form-layout" style="background-color: #ffffff;border: none; opacity: 0.85;">
     <login-header/>
-    <el-form ref="form" :model="loginForm" label-width="80px">
-      <el-form-item label="用户名:">
+    <el-form ref="form" :model="loginForm" :rules="loginRules" label-width="80px">
+      <el-form-item label="用户名:" prop="username">
         <el-input v-model="loginForm.username" type="text"/>
 <!--        <span slot="prefix" >-->
 <!--            <svg-icon icon-class="user" class="color-main"/>-->
 <!--        </span>-->
       </el-form-item>
-      <el-form-item label="密码:">
+      <el-form-item label="密码:" prop="password">
         <el-input v-model="loginForm.password" :type="pwdType"/>
 <!--        <span slot="prefix">-->
 <!--            <svg-icon icon-class="password" class="color-main"/>-->
@@ -32,14 +32,27 @@
   import loginFooter from './LoginFooter'
   import loginHeader from './LoginHeader'
   import {login,hello} from '../../utils/api'
+  import {setToken,getToken} from '../../utils/auth'
+  import { mapActions, mapGetters } from 'vuex'
   export default {
     name: 'login',
     components: { loginFooter, loginHeader },
     data () {
-      return {
-        loginForm: { username: '', password: '' },
-        pwdType: 'password',
-      }
+        const validateUsername = (rule, value, callback) => {
+            if (value.match(/^\s+$/) || value === '') {
+                callback(new Error("请输入账号名称"))
+            } else {
+                callback()
+            }
+        };
+        return {
+            loginForm: { username: '', password: '' },
+            pwdType: 'password',
+            loginRules: {
+                username: [{required: true, trigger: 'blur', validator: validateUsername}],
+                password: [{required: true, trigger: 'blur', message: "请输入密码"}]
+            },
+        }
     },
     methods: {
       showPwd() {
@@ -55,20 +68,24 @@
             password: this.loginForm.password
           }).then(successResponse => {
             console.log(successResponse);
-            if (successResponse.code === 200) {
-              this.$router.push({path:'/home'});
-            }
-          }).catch(err=> {
-            alert(err);
-            console.log(err);
-          }
+            this.$router.push({path:'/home'});
+            const data = successResponse.data;
+            const tokenStr = data.tokenHead+data.token;
+            this.setToken(tokenStr);
+            setToken(tokenStr);
+            let token = getToken();
+            console.warn("通过cookies-js设置token后进行获取"+token);
+          }).catch(
           )
       },
       hello(){
         hello().then(resp => {
           console.log(resp)
         });
-      }
+      },
+        ...mapActions([
+            'setToken'
+        ]),
     }
   }
 </script>

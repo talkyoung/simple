@@ -1,6 +1,7 @@
 package com.talkyoung.simpro.controller;
 
 import com.talkyoung.simcommon.CommonResult;
+import com.talkyoung.simcommon.ResultCode;
 import com.talkyoung.simpojo.entity.User;
 import com.talkyoung.simpro.exception.UserNotFoundException;
 import com.talkyoung.simpro.service.LoginService;
@@ -27,17 +28,17 @@ public class LoginController {
     private JwtTokenUtil jwtTokenUtil;
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public CommonResult login(@RequestParam String username, @RequestParam String password){
-        UserDetails userDetails = loginService.login(username, password);
+//    public CommonResult login(@RequestParam String username, @RequestParam String password){
+    public CommonResult login(@RequestBody User user){
+        UserDetails userDetails = loginService.login(user.getUsername(), user.getPassword());
         if (userDetails == null) {
-            throw new UserNotFoundException();
+            return CommonResult.validateFailed("用户名或密码错误!");
         }
         String token = jwtTokenUtil.generateToken(userDetails);
         Map<String, String> tokenMap = new HashMap<>();
         tokenMap.put("token", token);
         tokenMap.put("tokenHead", tokenHead);
 //        tokenMap.put("userId",userDetails.getUmsMember().getId().toString());
-
         return CommonResult.success(tokenMap);
     }
 

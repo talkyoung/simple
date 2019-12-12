@@ -9,7 +9,7 @@ public enum ResultCode implements IErrorCode {
     VALIDATE_FAILED(404, "参数检验失败"),
     UNAUTHORIZED(401, "暂未登录或token已经过期"),
     FORBIDDEN(403, "没有相关权限"),
-    VALIDATE_CODE_ERROR(10000,"登陆验证码出错"),
+    VALIDATE_CODE_ERROR(10000,"登陆密码出错"),
 
 
     MERCHANT_NOT_PASS(10005,"该账户下店铺暂未通过审核"),
