@@ -10,11 +10,11 @@ Vue.use(Router)
 
 const router = new Router({
       routes: [
-          // {
-          //   path: '/',
-          //   name: 'login',
-          //   component: login
-          // },
+          {
+            path: '/',
+            name: 'login',
+            component: login
+          },
           {
             path: '/login',
             name: 'login',
@@ -40,12 +40,13 @@ router.beforeEach((to, from, next) => {
   NProgress.start();
   console.log("router beforeEach:"+getToken());
   if (getToken()) {
-    if (to.path === '/login') {
-      next({ path: '/home' });
-      NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
-    }else {
-      next();
-    }
+    next();
+    // if (to.path === '/login') {
+    //   next({ path: '/home' });
+    //   NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
+    // }else {
+    //   next();
+    // }
     // else {
     //   if (store.getters.roles.length === 0) {
     //     store.dispatch('GetInfo').then(res => { // 拉取用户信息

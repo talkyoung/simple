@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-
 public class GenerateTokenByBCrypt {
 
     @Autowired
@@ -21,8 +20,8 @@ public class GenerateTokenByBCrypt {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
     
-    @RequestMapping(value = "/genereateToken",method = RequestMethod.GET)
-    public void genereateToken(String username,String password) {
+    @RequestMapping(value = "/generateToken",method = RequestMethod.GET)
+    public void generateToken(String username,String password) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         String token = null;
         if(userDetails!=null){
