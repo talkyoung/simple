@@ -7,7 +7,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-@MapperScan("com.talkyoung.simpojo.dao")
+//@MapperScan("com.talkyoung.simpojo.mapper")
 public class SimProApplication{
 //public class SimProApplication extends SpringBootServletInitializer {
 //    //为了在tomcat容器中运行

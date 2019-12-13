@@ -1,6 +1,6 @@
 package com.talkyoung.simpro.serviceImpl;
 
-import com.talkyoung.simpojo.dao.UserMapper;
+import com.talkyoung.simpojo.mapper.UserMapper;
 import com.talkyoung.simpojo.entity.User;
 import com.talkyoung.simpojo.entity.UserExample;
 import com.talkyoung.simpro.service.LoginService;

@@ -1,6 +1,6 @@
 package com.talkyoung.simpro.serviceImpl;
 
-import com.talkyoung.simpojo.dao.StudentMapper;
+import com.talkyoung.simpojo.mapper.StudentMapper;
 import com.talkyoung.simpojo.entity.Student;
 import com.talkyoung.simpro.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;

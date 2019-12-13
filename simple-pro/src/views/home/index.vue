@@ -12,7 +12,7 @@
 <script>
     import loginFooter from '../login/LoginFooter'
     import loginHeader from '../login/LoginHeader'
-    import showStudent from "../student/showStudent";
+    import showStudent from "../student/studentManage";
     export default {
       name: "home",
       components: { loginFooter, loginHeader,showStudent },
