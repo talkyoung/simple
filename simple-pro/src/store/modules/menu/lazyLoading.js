@@ -1,1 +1,1 @@
-export default (name, index = false) => () => import(`@/views/${name}${index ? '/index' : ''}.vue`)
+export default (name) => () => import(`@/views/${name}`)

@@ -25,40 +25,38 @@ export const constantRouterMap = [
     name: 'login',
     component: login
   },
-  {
-    path: '/home',
-    name: 'home',
-    component: home
-  },
-  {
-    path: '/showStudent',
-    name: 'showStudent',
-    component: showStudent
-  },
-  {
-    path: '/user',
-    name: 'user',
-    component: user
-  }
+  // {
+  //   path: '/home',
+  //   name: 'home',
+  //   component: home
+  // },
+  // {
+  //   path: '/showStudent',
+  //   name: 'showStudent',
+  //   component: showStudent
+  // },
+  // {
+  //   path: '/user',
+  //   name: 'user',
+  //   component: user
+  // }
 ];
 
 const router = new Router({
-      routes: constantRouterMap
+  routes: constantRouterMap
   }
 );
 
 // 定义一个函数来创建router
 export const createRouter = routes => new Router({
   mode: 'history',
-  // base: process.env.BASE_URL,
+  base: process.env.API_BASEURL, //从环境进程中根据运行环境获取的api的base_url
   routes
 });
 
 const whiteList = ['/login','/regist','/logisticsList','/logistics'] // 不重定向白名单
 router.beforeEach((to, from, next) => {
-  console.log("router beforeEach:"+getToken());
   NProgress.start();
-  console.log("router beforeEach:"+getToken());
   if (getToken()) {
     next();
     // if (to.path === '/login') {
@@ -97,31 +95,5 @@ router.afterEach(() => {
 });
 
 export default router;
-// export default new Router({
-//   // mode: 'history', //后端支持可开
-//   scrollBehavior: () => ({y: 0}),
-//   routes: [
-//     // {
-//     //   path: '/',
-//     //   name: 'login',
-//     //   component: login
-//     // },
-//     {
-//       path: '/login',
-//       name: 'login',
-//       component: login
-//     },
-//     {
-//       path: '/home',
-//       name: 'home',
-//       component: home
-//     },
-//     {
-//       path: '/showStudent',
-//       name: 'showStudent',
-//       component: showStudent
-//     }
-//   ]
-// })
 
 

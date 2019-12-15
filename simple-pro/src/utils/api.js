@@ -1,7 +1,7 @@
 import service from './request'
 export const getUserRolePermission = (userId) => {
   return service({
-    url: '/role/getUserRolePermission/' + userId,
+    url: '/userRole/getUserRolePermission/' + userId,
     method: 'get'
   })
 };

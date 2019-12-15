@@ -4,12 +4,11 @@ import { Message } from 'element-ui'
 import store from '../store'
 
 const service = axios.create({
-  baseURL: "/simpro",  // api的base_url
+  baseURL: process.env.API_BASEURL, // 从环境进程中根据运行环境获取的api的base_url,  // api的base_url
   timeout: 5000  // 请求超时时间
 });
 
 service.interceptors.request.use(config => {
-  console.warn("request interceptors"+store.getters.token);
   if (store.getters.token) {
     config.headers['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
   }

@@ -8,13 +8,13 @@ import java.util.List;
  * 由于菜单拥有子菜单，所以创建该组合类用于保存父菜单下的子菜单
  */
 public class UserPermissionCombination extends UserPermission {
-    private List<UserPermissionCombination> childern;
+    private List<UserPermissionCombination> children;
 
-    public List<UserPermissionCombination> getChildern() {
-        return childern;
+    public List<UserPermissionCombination> getChildren() {
+        return children;
     }
 
-    public void setChildern(List<UserPermissionCombination> childern) {
-        this.childern = childern;
+    public void setChildren(List<UserPermissionCombination> children) {
+        this.children = children;
     }
 }

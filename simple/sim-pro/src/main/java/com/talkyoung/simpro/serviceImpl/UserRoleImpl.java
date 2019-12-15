@@ -42,10 +42,10 @@ public class UserRoleImpl implements UserRoleSV {
     private UserPermissionCombination covert(UserPermission permission,List<UserPermission> permissionList){
         UserPermissionCombination node = new UserPermissionCombination();
         BeanUtils.copyProperties(permission,node);
-        List<UserPermissionCombination> childern = permissionList.stream()
+        List<UserPermissionCombination> children = permissionList.stream()
                 .filter(subPermission -> subPermission.getPid().equals(permission.getId()))
                 .map(subPermission -> covert(subPermission,permissionList)).collect(Collectors.toList());
-        node.setChildern(childern);
+        node.setChildren(children);
         return node;
     }
 }

@@ -1,4 +1,4 @@
-import { getToken,getUserId} from '../../utils/auth'
+import { getToken,getUserId,setToken,setUserId} from '../../utils/auth'
 import lazyLoading from "./menu/lazyLoading";
 import {login} from "../../utils/api";
 
@@ -24,10 +24,18 @@ const user = {
     APPEND_MENU: (state, menuItem)=> {
       if (menuItem) {
         menuItem.map(function (item) {
+          // item.component = lazyLoading(item.component);
+          // let value1 = item.component;
+          // item.component = resolve => require(['@/views' + value1], resolve);
           //延迟加载子菜单的compoent，只加载一级菜单？
           if(typeof(item.children) != "undefined"){
             item.children.map(function (child) {
-              child.component = lazyLoading(child.component)
+              // child.component = lazyLoading(child.component);
+              let value2 = child.component;
+              child.component = () => import(`@/views/${value2}`);
+              console.log("````````"+child.component);
+              // let value2 = child.component;
+              // child.component = resolve => require(['@/views' + value2], resolve);
             })
           }
         });
@@ -43,7 +51,7 @@ const user = {
         login({username: userInfo.username, password: userInfo.password})
           .then(response => {
           const data = response.data;
-          const tokenStr = data.tokenHead+data.token;
+          const tokenStr = data.tokenHead + data.token;
           setToken(tokenStr);
           setUserId(data.userId);
           commit('SET_TOKEN', tokenStr);

@@ -1,6 +1,6 @@
 <template>
-    <div style="font-size: 10px;margin-bottom: 20px">
-      <span style="float: right;">Copyright by @talkyoung.</span>
+    <div style="font-size: 11px;position: absolute;right:11px;bottom:10px;color: white">
+      <span style="float: right;">Copyright © Talkyoung Private. All rights reserved. </span>
     </div>
 </template>
 
