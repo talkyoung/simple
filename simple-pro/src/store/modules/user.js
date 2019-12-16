@@ -21,25 +21,42 @@ const user = {
     SET_LOAD_ROUTES: (state)=>{
       state.isLoadRoutes = !state.isLoadRoutes
     },
+    // APPEND_MENU: (state, menuItem)=> {
+    //   if (menuItem) {
+    //     menuItem.map(function (item) {
+    //       // item.component = lazyLoading(item.component);
+    //       // let value1 = item.component;
+    //       // item.component = resolve => require(['@/views' + value1], resolve);
+    //       //延迟加载子菜单的compoent，只加载一级菜单？
+    //       // if(typeof(item.children) != "undefined"){
+    //       if(!Array.prototype.isPrototypeOf(item.children) && item.children.length !== 0){
+    //         item.children.map(function (child) {
+    //           // child.component = lazyLoading(child.component);
+    //           // let value2 = child.component;
+    //           // child.component = () => import(`@/views/${value2}`);
+    //           console.log("````````"+child.component);
+    //           let value2 = child.component;
+    //           child.component = (resolve) => require(['@/views' + value2], resolve);
+    //         })
+    //       }
+    //     });
+    //     state.items.push(...menuItem)
+    //   }
+    // }
     APPEND_MENU: (state, menuItem)=> {
       if (menuItem) {
         menuItem.map(function (item) {
-          // item.component = lazyLoading(item.component);
-          // let value1 = item.component;
-          // item.component = resolve => require(['@/views' + value1], resolve);
-          //延迟加载子菜单的compoent，只加载一级菜单？
           if(typeof(item.children) != "undefined"){
             item.children.map(function (child) {
-              // child.component = lazyLoading(child.component);
-              let value2 = child.component;
-              child.component = () => import(`@/views/${value2}`);
-              console.log("````````"+child.component);
+              child.component =  () => import(`@/views${child.component}`)
+              // child.component = lazyLoading(child.component)
               // let value2 = child.component;
-              // child.component = resolve => require(['@/views' + value2], resolve);
+              // child.component = (resolve) => require(['@/views' + value2], resolve);
             })
           }
-        });
+        })
         state.items.push(...menuItem)
+        console.log("`````````"+JSON.stringify(menuItem))
       }
     }
   },

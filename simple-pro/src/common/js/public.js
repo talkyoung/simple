@@ -81,11 +81,10 @@ export function fieldIsNull(field) {
 //
 export function menuRender(menu){
   if(fieldIsNull(menu.children)){
-    return {path:menu.path, component:menu.component, redirect:menu.redirect,name:menu.name, hidden:menu.hidden == 0 ? false: true, meta:{title:menu.name,icon:menu.icon}}
+    return {path:menu.path, component:menu.component, redirect:menu.redirect,name:menu.name, hidden:menu.hidden !== 0, meta:{title:menu.name,icon:menu.icon}}
   }
-  let tmpMenu = null;
-    tmpMenu = menu.component == 'layout' ? {path:menu.path, component:menu.component, redirect:menu.redirect,name:menu.name, hidden:menu.hidden == 0 ? false: true, meta:{title:menu.name,icon:menu.icon},children:[]}
-                                         : {path:menu.path, component:menu.component, redirect:menu.redirect,name:menu.name, hidden:menu.hidden == 0 ? false: true, meta:{title:menu.name,icon:menu.icon},children:[]}
+  let tmpMenu = menu.component === 'layout' ? {path:menu.path, component:menu.component, redirect:menu.redirect,name:menu.name, hidden:menu.hidden !== 0, meta:{title:menu.name,icon:menu.icon},children:[]}
+                                            : {path:menu.path, component:menu.component, redirect:menu.redirect,name:menu.name, hidden:menu.hidden !== 0, meta:{title:menu.name,icon:menu.icon},children:[]};
   for(let i = 0 ; i< menu.children.length; i ++ ){
     tmpMenu.children.push(menuRender(menu.children[i]));
   }

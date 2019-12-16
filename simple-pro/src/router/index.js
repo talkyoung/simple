@@ -25,11 +25,11 @@ export const constantRouterMap = [
     name: 'login',
     component: login
   },
-  // {
-  //   path: '/home',
-  //   name: 'home',
-  //   component: home
-  // },
+  {
+    path: '/home',
+    name: 'home',
+    component: () =>  import(`@/views/home`)
+  },
   // {
   //   path: '/showStudent',
   //   name: 'showStudent',
@@ -43,13 +43,14 @@ export const constantRouterMap = [
 ];
 
 const router = new Router({
+  // mode: history,
   routes: constantRouterMap
   }
 );
 
 // 定义一个函数来创建router
 export const createRouter = routes => new Router({
-  mode: 'history',
+  // mode: 'history',
   base: process.env.API_BASEURL, //从环境进程中根据运行环境获取的api的base_url
   routes
 });
@@ -59,28 +60,8 @@ router.beforeEach((to, from, next) => {
   NProgress.start();
   if (getToken()) {
     next();
-    // if (to.path === '/login') {
-    //   next({ path: '/home' });
-    //   NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
-    // }else {
-    //   next();
-    // }
-    // else {
-    //   if (store.getters.roles.length === 0) {
-    //     store.dispatch('GetInfo').then(res => { // 拉取用户信息
-    //       next()
-    //     }).catch((err) => {
-    //       store.dispatch('FedLogOut').then(() => {
-    //         Message.error(err || 'Verification failed, please login again');
-    //         localStorage.clear();
-    //         next({ path: '/home' })
-    //       })
-    //     })
-    //   } else {
-    //     next()
-    //   }
-    // }
   } else {
+    //存在于白名单中
     if (whiteList.indexOf(to.path) !== -1) {
       next()
     } else {
