@@ -1,5 +1,6 @@
 <template>
     <div>
+      <h1>student Manage</h1>
         <el-card>
           <el-table
             :data="tableData"

@@ -48,16 +48,16 @@ export const constantRouterMap = [
   // }
 ];
 
-const router = new Router({
-  routes: constantRouterMap
-  }
-);
+// const router = new Router({
+//   routes: constantRouterMap
+//   }
+// );
 
 // 定义一个函数来创建router
-export const createRouter = routes => new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.API_BASEURL, //从环境进程中根据运行环境获取的api的base_url
-  routes
+  routes: constantRouterMap
 });
 
 export function generateRoutes(menus = []) {
