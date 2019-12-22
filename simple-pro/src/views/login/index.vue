@@ -28,7 +28,7 @@
   import {fieldIsNull,menuRender} from '../../common/js/public'
   import {constantRouterMap,createRouter} from '../../router/index'
   import {store,router} from '../../main'
-
+  import {generateRoutes} from '../../router/index'
   export default {
     name: 'login',
     components: { loginFooter, loginHeader },
@@ -72,31 +72,22 @@
               if(valid){
                   removeToken();
                   removeToken();
-                  localStorage.clear();
+                  // localStorage.clear();
                   store.dispatch('Login', this.loginForm).then(() => {
-                      this.loading = false;
-                    getUserRolePermission(this.userId).then(res =>{
-                          if(fieldIsNull(res.data )){
-                                return
+                      getUserRolePermission(this.userId).then(res =>{
+                          if(typeof(res.data) == "undefined" || res.data == null){
+                              return
                           }
-                          res.data.forEach(menuItem =>{
-                                  menu.push(menuRender(menuItem))
-                          });
-                          console.log('menu:'+JSON.stringify(menu));
-                          localStorage.setItem("permission",JSON.stringify(res.data));
-                          this.appendMenu(Object.assign(menu));
-                          console.log('menu1:'+JSON.stringify(menu));
-                          this.$router.options.routes.push( ...menu);
-                          // console.log('this.$router.options.routes:'+JSON.stringify(this.$router.options.routes));
-                          // console.log('this.$router.options.routes:'+this.$router.options.routes);
-                          this.$router.addRoutes(router.options.routes);
-                          // console.log('router.options.routes:'+JSON.stringify(router.options.routes));
-                          // console.log('router.options.routes:'+router.options.routes);
-                          // location.reload();
+                          menu = res.data;
+                          localStorage.setItem("permissions",JSON.stringify(res.data));
+                          store.commit('SET_PERMISSIONS',menu);
+                          store.commit('SET_LOAD_ROUTES');
+                          let routes = generateRoutes(menu);
+                          this.$router.addRoutes(routes);
+                          this.$router.options.routes.push(routes);
                       });
-                    this.$router.push({path: '/home'})
+                      this.$router.push({path: '/home'})
                   }).catch(() => {
-                      this.loading = false
                   })
               }else{
                   console.log('参数验证不合法！');
@@ -104,28 +95,44 @@
               }
           });
       },
-  //       login({
-  //                 username: this.loginForm.username,
-  //                 password: this.loginForm.password
-  //             }).then(successResponse => {
-  //           console.warn(successResponse);
-  //           const data = successResponse.data;
-  //           const tokenStr = data.tokenHead+data.token;
-  //           const userId = data.userId;
-  //           this.setToken(tokenStr);
-  //           this.setUserId(userId);
-  //           setToken(tokenStr);
-  //           setUserId(userId);
-  //           let token = getToken();
-  //           console.warn("通过cookies-js设置token后进行获取"+token);
-  //           this.$router.push({path:'/home'});
-  //       }).catch(
-  //       )
-  //   }else{
-  //         alert("请输入正确的账号信息！");
-  // console.log('参数验证不合法！');
-  // return false
-  // }
+      // login () {
+      //     debugger;
+      //     let menu = [];
+      //     this.$refs.loginForm.validate(valid => {
+      //         if(valid){
+      //             removeToken();
+      //             removeToken();
+      //             // localStorage.clear();
+      //             store.dispatch('Login', this.loginForm).then(() => {
+      //               getUserRolePermission(this.userId).then(res =>{
+      //                     if(fieldIsNull(res.data )){
+      //                           return
+      //                     }
+      //                     res.data.forEach(menuItem =>{
+      //                             menu.push(menuRender(menuItem))
+      //                     });
+      //                     console.log('menu:'+JSON.stringify(menu));
+      //                     localStorage.setItem("permission",JSON.stringify(res.data));
+      //                     this.appendMenu(Object.assign(menu));
+      //                     console.log('menu1:'+JSON.stringify(menu));
+      //                     this.$router.addRoutes(menu);
+      //                     this.$router.options.routes.push( ...menu);
+      //                     // console.log('this.$router.options.routes:'+JSON.stringify(this.$router.options.routes));
+      //                     // console.log('this.$router.options.routes:'+this.$router.options.routes);
+      //                     // console.log('router.options.routes:'+JSON.stringify(router.options.routes));
+      //                     // console.log('router.options.routes:'+router.options.routes);
+      //                     // location.reload();
+      //                 });
+      //               this.$router.push({path: '/home'})
+      //             }).catch(() => {
+      //                 this.loading = false
+      //             })
+      //         }else{
+      //             console.log('参数验证不合法！');
+      //             return false
+      //         }
+      //     });
+      // },
       hello(){
         hello().then(resp => {
           console.log(resp)
@@ -135,13 +142,14 @@
             'setToken',
             'setUserId',
             'appendMenu',
+            'loadRoutes',
         ]),
     },
     computed: {
       ...mapGetters([
         'userId',
-        'items',
         'token',
+        'isLoadRoutes'
       ]),
     },
   }

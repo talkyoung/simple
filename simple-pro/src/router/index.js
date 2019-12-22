@@ -2,11 +2,16 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import login from '../views/login/index'
 import home from '../views/home/index'
-import showStudent from "../views/student/studentManage";
+import studentManage from "../views/student/studentManage";
 import user from '../views/user/userManage'
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
 import { getToken } from '../utils/auth' // 验权
+import userManage from "../views/user/userManage";
+import store from "../store";
+import { Message } from 'element-ui'
+import {getUserRolePermission} from '../utils/api'
+import {getUserId} from '../utils/auth'
 Vue.use(Router)
 
 export const constantRouterMap = [
@@ -25,20 +30,21 @@ export const constantRouterMap = [
     name: 'login',
     component: login
   },
+  {
+    path: '/home',
+    name: 'home',
+    component: () => import(`../views/home/index`),
+    children: []
+  }
   // {
-  //   path: '/home',
-  //   name: 'home',
-  //   component: home
+  //   path: '/studentManage',
+  //   name: 'studentManage',
+  //   component: studentManage
   // },
   // {
-  //   path: '/showStudent',
-  //   name: 'showStudent',
-  //   component: showStudent
-  // },
-  // {
-  //   path: '/user',
-  //   name: 'user',
-  //   component: user
+  //   path: '/userManage',
+  //   name: 'userManage',
+  //   component: userManage
   // }
 ];
 
@@ -54,32 +60,68 @@ export const createRouter = routes => new Router({
   routes
 });
 
+export function generateRoutes(menus = []) {
+    store.dispatch('loadRoutes').then();
+    for(let i = 0, l = menus.length; i < l; i++){
+        menus[i].children.forEach(menuItem => {
+          let menu = {
+            path: menuItem.path,
+            name: menuItem.name,
+            // component: (resolve) => require([`@/views/${menuItem.component}`], resolve),
+            component: () => import(`../views/${menuItem.component}`),
+            meta: {
+              icon:menuItem.icon,
+              title:menuItem.name
+            }
+          };
+          // constantRouterMap.push(menu);
+          constantRouterMap[2].children.push(menu);
+        })
+    }
+    return constantRouterMap;
+}
+
 const whiteList = ['/login','/regist','/logisticsList','/logistics'] // 不重定向白名单
 router.beforeEach((to, from, next) => {
   NProgress.start();
   if (getToken()) {
-    next();
-    // if (to.path === '/login') {
-    //   next({ path: '/home' });
-    //   NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
-    // }else {
-    //   next();
-    // }
-    // else {
-    //   if (store.getters.roles.length === 0) {
-    //     store.dispatch('GetInfo').then(res => { // 拉取用户信息
-    //       next()
-    //     }).catch((err) => {
-    //       store.dispatch('FedLogOut').then(() => {
-    //         Message.error(err || 'Verification failed, please login again');
-    //         localStorage.clear();
-    //         next({ path: '/home' })
-    //       })
-    //     })
-    //   } else {
-    //     next()
-    //   }
-    // }
+    //防止刷新导致的动态路由失效，isLoadRoutes用于判断是否失效
+    if(!store.getters.isLoadRoutes){
+      let permissions = localStorage.getItem("permissions");
+      if(permissions !== null){
+        permissions = JSON.parse(permissions);
+        store.commit('SET_PERMISSIONS',permissions);
+        store.commit('SET_LOAD_ROUTES');
+        let routes = generateRoutes(permissions);
+        router.addRoutes(routes);
+        router.options.routes.push(routes);
+        next();
+      }else{
+        let userId = getUserId();
+        getUserRolePermission(userId).then(res =>{
+          if(typeof(res.data) == "undefined" || res.data == null){
+            next({ path: '/login' });
+            return;
+          }
+          permissions = res.data;
+          localStorage.setItem("permissions",JSON.stringify(res.data));
+          store.commit('SET_PERMISSIONS',permissions);
+          store.commit('SET_LOAD_ROUTES');
+          let routes = generateRoutes(permissions);
+          router.addRoutes(routes);
+          router.options.routes.push(routes);
+          next();
+        }).catch((err) => {
+          store.dispatch('frontEndLoginOut').then(() => {
+            Message.error(err || 'Verification failed, please login again');
+            localStorage.clear();
+            next({ path: '/login' })
+          })
+        });
+      }
+    }else{
+      next();
+    }
   } else {
     if (whiteList.indexOf(to.path) !== -1) {
       next()

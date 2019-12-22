@@ -1,4 +1,4 @@
-import { getToken,getUserId,setToken,setUserId} from '../../utils/auth'
+import { getToken,getUserId,setToken,setUserId,removeToken,removeUserId} from '../../utils/auth'
 import lazyLoading from "./menu/lazyLoading";
 import {login} from "../../utils/api";
 
@@ -6,9 +6,8 @@ const user = {
   state: {
     userId:getUserId(),
     token:getToken(),
-    items:[],
+    permissions:[],
     isLoadRoutes: false,
-    // roles: [],
   },
 
   mutations: {
@@ -19,34 +18,15 @@ const user = {
       state.userId = userId
     },
     SET_LOAD_ROUTES: (state)=>{
-      state.isLoadRoutes = !state.isLoadRoutes
+      state.isLoadRoutes = true
     },
-    APPEND_MENU: (state, menuItem)=> {
-      if (menuItem) {
-        menuItem.map(function (item) {
-          // item.component = lazyLoading(item.component);
-          // let value1 = item.component;
-          // item.component = resolve => require(['@/views' + value1], resolve);
-          //延迟加载子菜单的compoent，只加载一级菜单？
-          if(typeof(item.children) != "undefined"){
-            item.children.map(function (child) {
-              // child.component = lazyLoading(child.component);
-              let value2 = child.component;
-              child.component = () => import(`@/views/${value2}`);
-              console.log("````````"+child.component);
-              // let value2 = child.component;
-              // child.component = resolve => require(['@/views' + value2], resolve);
-            })
-          }
-        });
-        state.items.push(...menuItem)
-      }
+    SET_PERMISSIONS: (state,permissions)=>{
+      state.permissions = permissions
     }
   },
 
   actions: {
     Login({ commit }, userInfo){
-      const username = userInfo.username.trim();
       return new Promise((resolve, reject) => {
         login({username: userInfo.username, password: userInfo.password})
           .then(response => {
@@ -80,6 +60,14 @@ const user = {
         commit("APPEND_MENU", menuItem)
       }
     },
+    //前端注销
+    frontEndLoginOut({commit}){
+      removeToken();
+      removeUserId();
+      commit('SET_TOKEN','');
+      commit('SET_USER_ID','');
+      localStorage.clear();
+    }
   }
 };
 
