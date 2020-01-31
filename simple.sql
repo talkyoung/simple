@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v12.08 (64 bit)
-MySQL - 5.7.17-log : Database - simple
+MySQL - 8.0.17 : Database - simple
 *********************************************************************
 */
 
@@ -12,7 +12,7 @@ MySQL - 5.7.17-log : Database - simple
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`simple` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`simple` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
 USE `simple`;
 
@@ -46,11 +46,9 @@ CREATE TABLE `sp_student` (
   `status` int(1) DEFAULT NULL COMMENT '帐号启用状态：0->禁用；1->启用',
   `last_login_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `sp_student` */
-
-insert  into `sp_student`(`id`,`stu_name`,`stu_password`,`sex`,`email`,`stu_address`,`status`,`last_login_time`) values (1,'talkyoung','talkyoung',0,'1120655294@qq.com','南京',1,'2019-12-01 10:26:35'),(2,'taoyang','taoyang',0,'taoyang@qq.com','南京江宁',1,'2019-12-11 16:30:49'),(3,'wangyang','wangyang',1,'wangyang@qq.com','安徽滁州',1,'2019-12-18 16:31:34'),(4,'zhuminghang','zhuminghang',1,'zhuminghang@qq.com','南京栖霞',1,'2019-12-07 16:32:08');
 
 /*Table structure for table `sp_user` */
 
@@ -93,7 +91,7 @@ CREATE TABLE `sp_user_permission` (
 
 /*Data for the table `sp_user_permission` */
 
-insert  into `sp_user_permission`(`id`,`pid`,`name`,`value`,`icon`,`type`,`path`,`status`,`create_time`,`sort`,`component`,`hidden`,`redirect`,`name_en`) values (1,0,'主页','aaa',NULL,0,'/home',1,'2019-12-13 09:44:51',1,'layout',0,'/home','home'),(2,0,'学生','aaa',NULL,0,'/student',1,'2019-12-13 09:47:17',2,'layout',0,'/student/studentManage','student'),(3,0,'用户','aaa',NULL,0,'/user',1,'2019-12-13 09:48:49',3,'layout',0,'/user/userManage','user'),(4,2,'学生管理','aaa',NULL,1,'studentManage',1,'2019-12-13 10:36:03',4,'/student/studentManage',0,NULL,'Student Manage'),(5,3,'用户管理','aaa',NULL,1,'userManage',1,'2019-12-13 10:49:39',5,'/user/userManage',0,NULL,'User Manage');
+insert  into `sp_user_permission`(`id`,`pid`,`name`,`value`,`icon`,`type`,`path`,`status`,`create_time`,`sort`,`component`,`hidden`,`redirect`,`name_en`) values (1,0,'主页','aaa','el-icon-location',0,'/home',1,'2019-12-13 09:44:51',1,'layout',0,'/home','home'),(2,0,'学生','aaa','el-icon-location',0,'/student',1,'2019-12-13 09:47:17',2,'layout',0,'/student/studentManage','student'),(3,0,'用户','aaa','el-icon-location',0,'/user',1,'2019-12-13 09:48:49',3,'layout',0,'/user/userManage','user'),(4,2,'学生管理','aaa','el-icon-location',1,'/studentManage',1,'2019-12-13 10:36:03',4,'student/studentManage',0,NULL,'Student Manage'),(5,3,'用户管理','aaa','el-icon-location',1,'/userManage',1,'2019-12-13 10:49:39',5,'user/userManage',0,NULL,'User Manage');
 
 /*Table structure for table `sp_user_role_permission_relation` */
 
@@ -108,7 +106,7 @@ CREATE TABLE `sp_user_role_permission_relation` (
 
 /*Data for the table `sp_user_role_permission_relation` */
 
-insert  into `sp_user_role_permission_relation`(`id`,`role_id`,`permission_id`) values (1,1,1),(2,1,2),(3,1,3),(4,1,4),(5,1,5);
+insert  into `sp_user_role_permission_relation`(`id`,`role_id`,`permission_id`) values (2,1,2),(3,1,3),(4,1,4),(5,1,5);
 
 /*Table structure for table `sp_user_role_relation` */
 
@@ -124,6 +122,24 @@ CREATE TABLE `sp_user_role_relation` (
 /*Data for the table `sp_user_role_relation` */
 
 insert  into `sp_user_role_relation`(`id`,`user_id`,`role_id`) values (1,1,1);
+
+/* Procedure structure for procedure `proc_initData` */
+
+/*!50003 DROP PROCEDURE IF EXISTS  `proc_initData` */;
+
+DELIMITER $$
+
+/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_initData`()
+BEGIN
+    DECLARE i INT DEFAULT 3;
+    START TRANSACTION;
+    WHILE i<=10000 DO
+	INSERT INTO sp_student(stu_name,stu_password,sex,email,stu_address,STATUS,last_login_time) VALUES(concat("student_",i),"123456",0,concat(CONCAT("student",i),"@qq.com"),"南京江宁",1,now());
+        SET i = i+1;
+    END WHILE;
+    COMMIT;
+END */$$
+DELIMITER ;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
